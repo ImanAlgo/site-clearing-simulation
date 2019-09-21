@@ -14,6 +14,11 @@ Lets analize the requirements with **Gherkin** syntax which can be used in a **B
   Then the map is displayed  
   And the simulator is waiting for operation commands  
   
+  # Initial position of Bulldozer
+  Scenario: Bulldozer should be placed on position (0,0) at the initial stage
+  When the simulator has started
+  Then the bulldozer is located on (0,0)
+  
   # Enter command quite
   Scenario: The simulator must terminate once trainee enter quite command
   When trainee run command 'quite'
