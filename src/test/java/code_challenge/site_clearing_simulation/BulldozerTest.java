@@ -29,4 +29,19 @@ public class BulldozerTest {
         bulldozer.rotate(Face.NORTH);
         assertEquals(bulldozer.getDirection(), Face.NORTH);
     }
+
+    @Test
+    public void turnLeft() {
+        bulldozer.turnLeft();
+        assertEquals(bulldozer.getDirection(), Face.NORTH);
+
+        bulldozer.turnLeft();
+        assertEquals(bulldozer.getDirection(), Face.WEST);
+
+        bulldozer.turnLeft();
+        assertEquals(bulldozer.getDirection(), Face.SOUTH);
+
+        bulldozer.turnLeft();
+        assertEquals(bulldozer.getDirection(), Face.EAST);
+    }
 }
