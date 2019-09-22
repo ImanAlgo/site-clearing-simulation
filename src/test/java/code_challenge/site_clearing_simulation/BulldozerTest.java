@@ -99,4 +99,10 @@ public class BulldozerTest {
                 Position.of(7,8), Position.of(7,7)
         ));
     }
+
+    @Test
+    public void setPosition() {
+        bulldozer.setPosition(3,5);
+        assertEquals(bulldozer.getPosition(), Position.of(3,5));
+    }
 }

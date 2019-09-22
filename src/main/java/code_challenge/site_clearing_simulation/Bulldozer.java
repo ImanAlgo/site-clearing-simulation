@@ -72,10 +72,6 @@ public class Bulldozer {
         return position;
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
     public void setPosition(int x, int y) {
         this.position = Position.of(x,y);
     }
