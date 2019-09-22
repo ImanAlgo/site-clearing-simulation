@@ -12,7 +12,7 @@ public class Position {
     }
 
     public static Position of(int x, int y) {
-        return new Position(0,0);
+        return new Position(x,y);
     }
 
     @Override
@@ -28,4 +28,22 @@ public class Position {
     public int hashCode() {
         return Objects.hash(x, y);
     }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+
 }
