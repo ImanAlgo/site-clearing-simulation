@@ -44,4 +44,19 @@ public class BulldozerTest {
         bulldozer.turnLeft();
         assertEquals(bulldozer.getDirection(), Face.EAST);
     }
+
+    @Test
+    public void turnRight() {
+        bulldozer.turnRight();
+        assertEquals(bulldozer.getDirection(), Face.SOUTH);
+
+        bulldozer.turnRight();
+        assertEquals(bulldozer.getDirection(), Face.WEST);
+
+        bulldozer.turnRight();
+        assertEquals(bulldozer.getDirection(), Face.NORTH);
+
+        bulldozer.turnRight();
+        assertEquals(bulldozer.getDirection(), Face.EAST);
+    }
 }
