@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.function.Consumer;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 public class SimulatorTest {
 
@@ -143,6 +144,11 @@ public class SimulatorTest {
         MatcherAssert.assertThat(simulator.getCommandHistory(), Matchers.contains(
                 "Advance 3", "Turn Right", "Advance 1", "Turn Left", "Turn Left"
         ));
+    }
+
+    @Test
+    public void unmodifiableCommandHistoryFromOutside() {
+        assertThrows(UnsupportedOperationException.class, ()->simulator.getCommandHistory().add("Turn Right"));
     }
 
     private void assertIsTerminated(Simulator simulator, String message) {
