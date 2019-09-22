@@ -1,13 +1,11 @@
 package code_challenge.site_clearing_simulation;
 
-import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -37,51 +35,21 @@ public class BulldozerTest {
     }
 
     @Test
-    public void turnLeft() {
-        bulldozer.turnLeft();
-        assertEquals(bulldozer.getDirection(), Face.NORTH);
-
-        bulldozer.turnLeft();
-        assertEquals(bulldozer.getDirection(), Face.WEST);
-
-        bulldozer.turnLeft();
-        assertEquals(bulldozer.getDirection(), Face.SOUTH);
-
-        bulldozer.turnLeft();
-        assertEquals(bulldozer.getDirection(), Face.EAST);
-    }
-
-    @Test
-    public void turnRight() {
-        bulldozer.turnRight();
-        assertEquals(bulldozer.getDirection(), Face.SOUTH);
-
-        bulldozer.turnRight();
-        assertEquals(bulldozer.getDirection(), Face.WEST);
-
-        bulldozer.turnRight();
-        assertEquals(bulldozer.getDirection(), Face.NORTH);
-
-        bulldozer.turnRight();
-        assertEquals(bulldozer.getDirection(), Face.EAST);
-    }
-
-    @Test
-    public void advance() {
+    public void move() {
         List<Position> traversedPositions = new ArrayList<>();
 
         bulldozer.setPosition(5,5);
 
         traversedPositions.clear();
         bulldozer.rotate(Face.EAST);
-        bulldozer.advance(3, traversedPositions::add);
+        bulldozer.move(3, traversedPositions::add);
         MatcherAssert.assertThat(traversedPositions, Matchers.contains(
                 Position.of(6,5), Position.of(7,5), Position.of(8,5)
         ));
 
         traversedPositions.clear();
         bulldozer.rotate(Face.SOUTH);
-        bulldozer.advance(4, traversedPositions::add);
+        bulldozer.move(4, traversedPositions::add);
         MatcherAssert.assertThat(traversedPositions, Matchers.contains(
                 Position.of(8,6), Position.of(8,7),
                 Position.of(8,8), Position.of(8,9)
@@ -89,14 +57,22 @@ public class BulldozerTest {
 
         traversedPositions.clear();
         bulldozer.rotate(Face.WEST);
-        bulldozer.advance(1, traversedPositions::add);
+        bulldozer.move(1, traversedPositions::add);
         MatcherAssert.assertThat(traversedPositions, Matchers.contains(Position.of(7,9)));
 
         traversedPositions.clear();
         bulldozer.rotate(Face.NORTH);
-        bulldozer.advance(2, traversedPositions::add);
+        bulldozer.move(2, traversedPositions::add);
         MatcherAssert.assertThat(traversedPositions, Matchers.contains(
                 Position.of(7,8), Position.of(7,7)
+        ));
+
+        // Test move in reverse direction
+        traversedPositions.clear();
+        bulldozer.rotate(Face.NORTH);
+        bulldozer.move(-2, traversedPositions::add);
+        MatcherAssert.assertThat(traversedPositions, Matchers.contains(
+                Position.of(7,8), Position.of(7,9)
         ));
     }
 
