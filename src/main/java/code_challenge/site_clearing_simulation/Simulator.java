@@ -10,14 +10,16 @@ public class Simulator {
     private boolean terminated;
     private final char[][] site;
     private final Bulldozer bulldozer;
+    private final CostCalculator calculator;
     private final List<String> commandHistory;
 
-    public Simulator(char[][] site, Bulldozer bulldozer) {
+    public Simulator(char[][] site, Bulldozer bulldozer, CostCalculator calculator) {
         this.terminated = false;
         this.site = site;
         bulldozer.rotate(Face.EAST);
         this.bulldozer = bulldozer;
         this.bulldozer.setPosition(-1,0);
+        this.calculator = calculator;
         commandHistory = new ArrayList<>();
     }
 
@@ -31,6 +33,7 @@ public class Simulator {
 
     public Simulator turnLeft() {
         commandHistory.add("Turn Left");
+        calculator.left();
 
         if (terminated) {
             throw new RuntimeException("Simulator is terminated and can not turn left any more");
@@ -51,6 +54,7 @@ public class Simulator {
 
     public Simulator turnRight() {
         commandHistory.add("Turn Right");
+        calculator.right();
 
         if (terminated) {
             throw new RuntimeException("Simulator is terminated and can not turn right any more");
@@ -71,6 +75,7 @@ public class Simulator {
 
     public Simulator advance(int steps) {
         commandHistory.add(String.format("Advance %s", steps));
+        calculator.advance(steps);
 
         if (terminated) {
             throw new RuntimeException("Simulator is terminated and can not advance any more");
@@ -80,16 +85,28 @@ public class Simulator {
         }
 
         try {
-            bulldozer.move(steps, (p) -> {
-                if (p.getX() < 0 || p.getX() >= getSite()[0].length) {
+            bulldozer.move(steps, (position, step) -> {
+                if (position.getX() < 0 || position.getX() >= getSite()[0].length) {
                     throw new IndexOutOfBoundsException("Can not navigate bulldozer beyond the site boundaries");
                 }
 
-                if(getSite()[p.getY()][p.getX()] == 'T') {
+                char content = getSite()[position.getY()][position.getX()];
+
+                if(steps > step) {
+                    calculator.pass(content);
+                } else {
+                    calculator.visit(content);
+                }
+
+                // Clean the block
+                site[position.getY()][position.getX()] = '-';
+
+                if(content == 'T') {
                     throw new RuntimeException("Navigating on a protected tree is not allowed");
                 }
             });
         } catch (RuntimeException e) {
+            setUnclearedBlocks();
             this.terminated = true;
         }
 
@@ -98,10 +115,27 @@ public class Simulator {
 
     public void quite() {
         commandHistory.add("Quite");
+        calculator.quite();
+        setUnclearedBlocks();
         this.terminated = true;
     }
 
     public List<String> getCommandHistory() {
         return Collections.unmodifiableList(commandHistory);
+    }
+
+    private void setUnclearedBlocks() {
+        int numberOfUnclearedBlocks = 0;
+        List<Character> unclearedBlocks = Arrays.asList('r', 't', 'o');
+
+        for(int row = 0; row < getSite().length; ++row) {
+            for(int col = 0; col < getSite()[0].length; ++col) {
+                if(unclearedBlocks.contains(getSite()[row][col])) {
+                    ++numberOfUnclearedBlocks;
+                }
+            }
+        }
+
+        calculator.setUnclearedBlocks(numberOfUnclearedBlocks);
     }
 }

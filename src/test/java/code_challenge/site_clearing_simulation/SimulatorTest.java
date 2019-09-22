@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
@@ -26,43 +25,14 @@ public class SimulatorTest {
                 {'r', 'r', 'r', 'r', 'r', 't', 'o', 'o', 'o', 'o'}
         };
 
-        simulator = new Simulator(site, new Bulldozer());
-    }
-
-    @Test
-    public void initialSimulator() {
-        SimulatorBeautifier beautifier = SimulatorBeautifier.of(simulator);
-        String displaySite = beautifier.beautifySite();
-
-        // Assert if SimulatorBeautifier some how shows the site squares in order
-        MatcherAssert.assertThat(displaySite, Matchers.stringContainsInOrder(
-                // an iterator which iterate the siteMap in a row-first order
-                () -> new Iterator<String>() {
-                    int index = 0;
-                    int rows = simulator.getSite().length;
-                    int cols = simulator.getSite().length;
-
-                    @Override
-                    public boolean hasNext() {
-                        return (rows*cols) > index;
-                    }
-
-                    @Override
-                    public String next() {
-                        if (hasNext()) {
-                            return String.valueOf(simulator.getSite()[Math.floorDiv(index, cols)][Math.floorMod(index++, cols)]);
-                        }
-                        return null;
-                    }
-                }
-        ));
+        simulator = new Simulator(site, new RegularBulldozer(), new NormalCostCalculator());
     }
 
     @Test
     public  void initialStateOfBulldozer() {
-        Bulldozer bulldozer = new Bulldozer();
+        RegularBulldozer bulldozer = new RegularBulldozer();
         bulldozer.rotate(Face.WEST);
-        Simulator newSimulator = new Simulator(new char[][]{{'0'}}, bulldozer);
+        Simulator newSimulator = new Simulator(new char[][]{{'0'}}, bulldozer, new NormalCostCalculator());
 
         Assert.assertSame(newSimulator.getBulldozer(), bulldozer);
         Assert.assertEquals(bulldozer.getDirection(), Face.EAST);
@@ -89,10 +59,10 @@ public class SimulatorTest {
     @Test
     public void advance() {
         simulator.advance(1);
-        Assert.assertEquals(Position.of(1,0), simulator.getBulldozer().getPosition());
+        Assert.assertEquals(Position.of(0,0), simulator.getBulldozer().getPosition());
 
         simulator.advance(2);
-        Assert.assertEquals(Position.of(3,0), simulator.getBulldozer().getPosition());
+        Assert.assertEquals(Position.of(2,0), simulator.getBulldozer().getPosition());
 
         Assert.assertThrows(RuntimeException.class, ()->simulator.advance(-1));
     }
@@ -128,13 +98,13 @@ public class SimulatorTest {
 
     @Test
     public void navigateOnProtectedTree() {
-        simulator.advance(7).turnRight().advance(1);
+        simulator.advance(8).turnRight().advance(1);
         assertIsTerminated(simulator, "Simulator must terminate if navigate on protected tree");
     }
 
     @Test
     public void passingThroughProtectedTree() {
-        simulator.advance(7).turnRight().advance(4);
+        simulator.advance(8).turnRight().advance(4);
         assertIsTerminated(simulator, "Simulator must terminate if pass through a protected tree");
     }
 

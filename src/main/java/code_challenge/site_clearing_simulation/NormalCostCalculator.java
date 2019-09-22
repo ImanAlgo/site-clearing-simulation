@@ -38,6 +38,11 @@ public class NormalCostCalculator implements CostCalculator {
     }
 
     @Override
+    public void quite() {
+        // IGNORE: Cause there is no cost for quite
+    }
+
+    @Override
     public void pass(char item) {
         switch (item) {
             case '-':
@@ -92,9 +97,9 @@ public class NormalCostCalculator implements CostCalculator {
     }
 
     @Override
-    public void addUnclearedBlocks(int count) {
-        this.numberOfUnclearedSquares += count;
-        this.costOfUnclearedSquares += 3 * count;
+    public void setUnclearedBlocks(int count) {
+        this.numberOfUnclearedSquares = count;
+        this.costOfUnclearedSquares = 3 * count;
     }
 
     @Override

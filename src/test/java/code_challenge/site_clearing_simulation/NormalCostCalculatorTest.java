@@ -260,8 +260,9 @@ public class NormalCostCalculatorTest {
     }
 
     @Test
-    public void addUnclearedBlocks() {
-        calculator.addUnclearedBlocks(30);
+    public void setUnclearedBlocks() {
+        calculator.setUnclearedBlocks(23);
+        calculator.setUnclearedBlocks(30);
 
         Assert.assertEquals(0, calculator.getNumberOfCommunications());
         Assert.assertEquals(0, calculator.getCostOfCommunications());
@@ -294,7 +295,7 @@ public class NormalCostCalculatorTest {
         calculator.visit('r');
         calculator.visit('-');
         calculator.visit('o');
-        calculator.addUnclearedBlocks(22);
+        calculator.setUnclearedBlocks(22);
 
         Assert.assertEquals(109, calculator.getTotalCost());
     }

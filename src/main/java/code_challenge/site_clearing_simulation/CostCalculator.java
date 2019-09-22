@@ -4,9 +4,10 @@ public interface CostCalculator {
     void left();
     void right();
     void advance(int steps);
+    void quite();
     void pass(char item);
     void visit(char item);
-    void addUnclearedBlocks(int count);
+    void setUnclearedBlocks(int count);
 
     int getNumberOfCommunications();
     int getCostOfCommunications();
