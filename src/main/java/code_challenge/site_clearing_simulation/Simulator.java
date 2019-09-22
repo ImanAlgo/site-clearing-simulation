@@ -1,7 +1,5 @@
 package code_challenge.site_clearing_simulation;
 
-import com.sun.istack.internal.NotNull;
-
 public class Simulator {
 
     private boolean terminated;
@@ -13,7 +11,7 @@ public class Simulator {
         this.site = site;
         bulldozer.rotate(Face.EAST);
         this.bulldozer = bulldozer;
-        this.bulldozer.setPosition(0,0);
+        this.bulldozer.setPosition(-1,0);
     }
 
     public char[][] getSite() {
@@ -24,7 +22,7 @@ public class Simulator {
         return bulldozer;
     }
 
-    public void turnLeft() {
+    public Simulator turnLeft() {
         if (terminated) {
             throw new RuntimeException("Simulator is terminated and can not turn left any more");
         }
@@ -38,9 +36,11 @@ public class Simulator {
         } else if(bulldozer.getDirection() == Face.EAST) {
             bulldozer.rotate(Face.NORTH);
         }
+
+        return this;
     }
 
-    public void turnRight() {
+    public Simulator turnRight() {
         if (terminated) {
             throw new RuntimeException("Simulator is terminated and can not turn right any more");
         }
@@ -53,9 +53,11 @@ public class Simulator {
         } else if(bulldozer.getDirection() == Face.EAST) {
             bulldozer.rotate(Face.SOUTH);
         }
+
+        return this;
     }
 
-    public void advance(int steps) {
+    public Simulator advance(int steps) {
         if (terminated) {
             throw new RuntimeException("Simulator is terminated and can not advance any more");
         }
@@ -68,10 +70,16 @@ public class Simulator {
                 if (p.getX() < 0 || p.getX() >= getSite()[0].length) {
                     throw new IndexOutOfBoundsException("Can not navigate bulldozer beyond the site boundaries");
                 }
+
+                if(getSite()[p.getY()][p.getX()] == 'T') {
+                    throw new RuntimeException("Navigating on a protected tree is not allowed");
+                }
             });
-        } catch (IndexOutOfBoundsException e) {
+        } catch (RuntimeException e) {
             quite();
         }
+
+        return this;
     }
 
     public void quite() {

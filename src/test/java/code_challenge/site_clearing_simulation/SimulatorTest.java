@@ -65,7 +65,7 @@ public class SimulatorTest {
 
         Assert.assertSame(newSimulator.getBulldozer(), bulldozer);
         Assert.assertEquals(bulldozer.getDirection(), Face.EAST);
-        Assert.assertEquals(bulldozer.getPosition(), Position.of(0,0));
+        Assert.assertEquals(bulldozer.getPosition(), Position.of(-1,0));
     }
 
     @Test
@@ -123,6 +123,18 @@ public class SimulatorTest {
     public void navigateBeyondBoundaries() {
         simulator.advance(11);
         assertIsTerminated(simulator, "Simulator must terminate if navigate beyond the boundaries");
+    }
+
+    @Test
+    public void navigateOnProtectedTree() {
+        simulator.advance(7).turnRight().advance(1);
+        assertIsTerminated(simulator, "Simulator must terminate if navigate on protected tree");
+    }
+
+    @Test
+    public void passingThroughProtectedTree() {
+        simulator.advance(7).turnRight().advance(4);
+        assertIsTerminated(simulator, "Simulator must terminate if pass through a protected tree");
     }
 
     private void assertIsTerminated(Simulator simulator, String message) {
