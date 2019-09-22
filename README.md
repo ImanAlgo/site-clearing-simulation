@@ -1,7 +1,15 @@
 # Site Clearing Simulation
 A challenge code for job interview
 
+- At the first step I analyzed the problem as you can see the BDD scenarios at the end of this file
+- Then I started to develop an initial test and add required code to pass the test 
+- I repeated the previous step multiple times for different test cases
+- Then I realized the code need some slight redesigning and I refactored the code to the desired design
+- Then I repeated the second step
+- The problem still has not completed but the main functionality is done
 
+For check the result I recommend see the integration test in file `SimulatorIntegrationTest` which shows the example scenario explained in the code challenge description, is passed. 
+  
 Lets analize the requirements with **Gherkin** syntax which can be used in a **BDD** tools
 
 ```
@@ -13,6 +21,11 @@ Lets analize the requirements with **Gherkin** syntax which can be used in a **B
   When trainee starts the simulator with the given site-map  
   Then the map is displayed  
   And the simulator is waiting for operation commands  
+  
+  # Initial position of Bulldozer
+  Scenario: Bulldozer should be placed on position (0,0) at the initial stage
+  When the simulator has started
+  Then the bulldozer is located on (0,0)
   
   # Enter command quite
   Scenario: The simulator must terminate once trainee enter quite command
