@@ -1,10 +1,16 @@
 package code_challenge.site_clearing_simulation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class Simulator {
 
     private boolean terminated;
     private final char[][] site;
     private final Bulldozer bulldozer;
+    private final List<String> commandHistory;
 
     public Simulator(char[][] site, Bulldozer bulldozer) {
         this.terminated = false;
@@ -12,6 +18,7 @@ public class Simulator {
         bulldozer.rotate(Face.EAST);
         this.bulldozer = bulldozer;
         this.bulldozer.setPosition(-1,0);
+        commandHistory = new ArrayList<>();
     }
 
     public char[][] getSite() {
@@ -23,6 +30,8 @@ public class Simulator {
     }
 
     public Simulator turnLeft() {
+        commandHistory.add("Turn Left");
+
         if (terminated) {
             throw new RuntimeException("Simulator is terminated and can not turn left any more");
         }
@@ -41,9 +50,12 @@ public class Simulator {
     }
 
     public Simulator turnRight() {
+        commandHistory.add("Turn Right");
+
         if (terminated) {
             throw new RuntimeException("Simulator is terminated and can not turn right any more");
         }
+
         if(bulldozer.getDirection() == Face.NORTH) {
             bulldozer.rotate(Face.EAST);
         } else if(bulldozer.getDirection() == Face.WEST) {
@@ -58,6 +70,8 @@ public class Simulator {
     }
 
     public Simulator advance(int steps) {
+        commandHistory.add(String.format("Advance %s", steps));
+
         if (terminated) {
             throw new RuntimeException("Simulator is terminated and can not advance any more");
         }
@@ -76,13 +90,18 @@ public class Simulator {
                 }
             });
         } catch (RuntimeException e) {
-            quite();
+            this.terminated = true;
         }
 
         return this;
     }
 
     public void quite() {
+        commandHistory.add("Quite");
         this.terminated = true;
+    }
+
+    public List<String> getCommandHistory() {
+        return Collections.unmodifiableList(commandHistory);
     }
 }

@@ -137,6 +137,14 @@ public class SimulatorTest {
         assertIsTerminated(simulator, "Simulator must terminate if pass through a protected tree");
     }
 
+    @Test
+    public void commandHistory() {
+        simulator.advance(3).turnRight().advance(1).turnLeft().turnLeft();
+        MatcherAssert.assertThat(simulator.getCommandHistory(), Matchers.contains(
+                "Advance 3", "Turn Right", "Advance 1", "Turn Left", "Turn Left"
+        ));
+    }
+
     private void assertIsTerminated(Simulator simulator, String message) {
         Assert.assertThrows(message, RuntimeException.class, ()-> simulator.advance(1));
         Assert.assertThrows(message, RuntimeException.class, simulator::turnLeft);
