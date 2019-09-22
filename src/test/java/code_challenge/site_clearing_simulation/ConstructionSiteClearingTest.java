@@ -2,6 +2,7 @@ package code_challenge.site_clearing_simulation;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,4 +53,16 @@ public class ConstructionSiteClearingTest {
                 }
         ));
     }
+
+    @Test
+    public  void initialStateOfBulldozer() {
+        Bulldozer bulldozer = new Bulldozer();
+        bulldozer.rotate(Face.WEST);
+        Simulator simulator = new Simulator(siteMap, bulldozer);
+
+        Assert.assertEquals(bulldozer.getDirection(), Face.EAST);
+        Assert.assertEquals(simulator.getBulldozerPosition(), Position.of(0,0));
+    }
+
+
 }
