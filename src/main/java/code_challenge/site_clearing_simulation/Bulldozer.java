@@ -8,6 +8,18 @@ public class Bulldozer {
         return direction;
     }
 
+    public void turnLeft() {
+        if(direction == Face.NORTH) {
+            direction = Face.WEST;
+        } else if(direction == Face.WEST) {
+            direction = Face.SOUTH;
+        } else if(direction == Face.SOUTH) {
+            direction = Face.EAST;
+        } else if(direction == Face.EAST) {
+            direction = Face.NORTH;
+        }
+    }
+
     /**
      * Rotate the bulldozer to face NORTH,WEST,SOUTH,EAST
      * This method is not for trainee but it is useful for

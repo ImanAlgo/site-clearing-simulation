@@ -65,4 +65,10 @@ public class ConstructionSiteClearingTest {
     }
 
 
+    private void assertIsTerminated(Simulator simulator) {
+        Assert.assertThrows(RuntimeException.class, ()->simulator.advance(1));
+        Assert.assertThrows(RuntimeException.class, simulator::left);
+        Assert.assertThrows(RuntimeException.class, simulator::right);
+    }
+
 }
